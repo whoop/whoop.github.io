@@ -1,0 +1,8 @@
+excerpt_separator: ""
+pygments: true
+markdown: kramdown
+url: http://whoop.github.io
+title: Mainly for Beginners
+tagline: Gists of reusable Ruby and JS
+description: My awesome new site
+paginate: 5
