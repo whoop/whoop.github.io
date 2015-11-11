@@ -1,8 +1,9 @@
 ---
-published: false
+published: true
 title: Google Maps Javascript API, on Rails
 layout: post
-tags: [javascript, google-maps, richmarker]
+tags: [javascript, google-maps-api, google-maps, rails, ruby-on-rails, turbolinks]
+categories: [guides, javascript, rails, ruby-on-rails]
 ---
 This is a guide to using Google Maps Javascript API on Rails 4.2.4, with Turbolinks enabled. Initially, when I simply included the Google Maps script inside the `<head>` tag, I kept getting this error:
 
@@ -35,7 +36,7 @@ So when I visited that page, Turbolinks was only changing the content of `<title
 I tried the [jQuery-turbolinks](https://coderwall.com/p/fajmvq/fixing-the-map-doesn-t-show-up-until-i-refresh-when-working-with-turbolinks-in-ruby-on-rails) solution here, but it didn't quite work. Here's what worked for me:
 
 1. **DO NOT** use jQuery-turbolinks.
-2. Use two different events, `$(doument).ready` and `$(document).on('page:load')
+2. Use two different events, `$(doument).ready` and `$(document).on('page:load')`
     ```javascript
     // Function to load the Google Maps script with a callback
     var loadGoogleMaps = function() {
@@ -45,13 +46,19 @@ I tried the [jQuery-turbolinks](https://coderwall.com/p/fajmvq/fixing-the-map-do
       document.body.appendChild(script);
     };
     
+    // Create a new map
+    var init = function() {
+      var mapCanvas = document.getElementById('map-canvas');
+      var mapOptions = { center: new google.maps.LatLng(3.139003, 101.68685499999992) };
+      var map = new google.maps.Map(mapCanvas, mapOptions);
+    };
+    
     // On page reload/first load (Google Maps script hasn't already loaded)
     $(document).ready(function() {
       loadGoogleMaps();
     });
     
-    // When page is loaded via turbolinks (Google Maps script already loaded),
-    // call the init function right away
+    // When page is loaded via turbolinks (Google Maps script already loaded), call the init function right away
     $(document).on('page:load', function() {
       init();
     });
